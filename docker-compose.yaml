@@ -1,0 +1,28 @@
+version: "3.8"
+services: 
+  main:
+    container_name: app
+    build: './apache/'
+    ports:
+      - "8080:80"
+    volumes:
+      - ./public_html/:/var/www/html/
+    networks:
+      - backend
+
+  mysql:
+    container_name: db
+    platform: linux/x86_64
+    image: mysql:8.0.26
+    networks:
+      - backend
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    volumes:
+      - 'native-api-server-mysql:/var/lib/mysql'
+
+networks:
+  backend:
+volumes:
+    native-api-server-mysql:
+        driver: local
