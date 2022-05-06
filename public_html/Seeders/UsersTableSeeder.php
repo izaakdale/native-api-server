@@ -1,12 +1,40 @@
 <?
 
-require "../bootstrap.php";
+require "TableSeeder.php";
+require "../Models/User.php";
 
-$statement = "INSERT INTO users (name, age, height) VALUES 
-    ('Izaak', 28, 175.5),
-    ('Mahtab', 25, 160.8)
-;";
+$seederRows = [
+    'columnNames' => "(name, age, height)",
+    'values' => [
+        "('izaak', 28, 175.5),",
+        "('mahtab', 25, 160)",
+    ]
+];
 
-$dbConnection->query($statement);
+TableSeeder::seed(User::$tableName, $seederRows);
+
+
+
+// will try this method another time
+// $userList = [
+//     new User('izaak', 28, 175.5),
+//     new User('mahtab', 25, 160),
+// ];
+
+// $seederRows = [
+//     'columnNames' => 
+//     [
+//         "name, age, height",
+//     ],
+//     'values' => [
+//     ]
+// ];
+
+// foreach($userList as $user)
+// [
+//     $seederRows['values'][] = $user->toSqlValue();
+// ]
+
+// TableSeeder::seed(User::$tableName, $seederRows);
 
 ?>

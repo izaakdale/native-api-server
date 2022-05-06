@@ -1,13 +1,14 @@
-<? 
-require "TableMigration.php";
+<?
 
-$tableName = 'users';
-$columns = [
+require "TableMigration.php";
+require "../Models/User.php";
+
+$migrationColumns = [
     'name' => 'varchar(255)',
     'age' => 'int',
     'height' => 'float',
 ];
 
-TableMigration::migrate($tableName, $columns);
+TableMigration::migrate(User::$tableName, $migrationColumns);
 
 ?>
