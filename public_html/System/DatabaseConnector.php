@@ -16,19 +16,8 @@ class DatabaseConnector {
         $user = getenv('DB_USERNAME');
         $pass = getenv('DB_PASSWORD');
 
-        try{
-            // $this->connection = new \PDO(
-            //     "mysql:host=$host;port=$port;charset=utf8mb4;dbname=$db",
-            //     $user,
-            //     $pass
-        // );
-
-            $this->connection = new mysqli($host, $user, $pass, $db, $port);
-
-
-        }catch (\PDOException $e){
-            exit($e->getMessage());
-        }
+        mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+        $this->connection = new mysqli($host, $user, $pass, $db, $port);
     }
 
     public function getConnection(){

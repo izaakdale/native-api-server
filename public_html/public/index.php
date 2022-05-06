@@ -1,33 +1,32 @@
 <?
 
 require '../bootstrap.php';
-require '../Controllers/PersonController.php';
+require '../Controllers/UserController.php';
 
-use Controllers\PersonController;
+use Controllers\UserController;
 
-
-// header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json"); // charset=UTF-8");
-// header("Access-Control-Allow-Methods: OPTIONS,GET,POST,PUT,DELETE");
-// header("Access-Control-Max-Age: 3600");
-// header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+header("Content-Type: application/json");
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $uri = explode('/', $uri);
-
-if ($uri[1] !== 'person') {
-    header("HTTP/1.1 404 Not Found");
-    exit();
-}
-
-$userId = null;
-if (isset($uri[2])) {
-    $userId = (int) $uri[2];
-}
-
 $requestMethod = $_SERVER["REQUEST_METHOD"];
 
-$controller = new PersonController($dbConnection, $requestMethod, $userId);
-$controller->processRequest();
+// form of api request should be in {{URL}}/api/model/param, explode => [0]/[1]/[2]/[3]
+if($uri[1] == 'api')
+{
+    switch ($uri[2]) {
+        case 'users':
+            $controller = new UserController($dbConnection);
+            $controller->processRequest($requestMethod, isset($uri[3]) ? (int) $uri[3] : null);
+            break;
+        default:
+            return Controller::notFoundResponse();
+            break;
+    }
+}
+else
+{
+    return Controller::notFoundResponse();
+}
 
 ?>
