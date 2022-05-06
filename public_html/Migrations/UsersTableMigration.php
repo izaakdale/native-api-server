@@ -1,14 +1,13 @@
 <? 
+require "TableMigration.php";
 
-require "../bootstrap.php";
+$tableName = 'users';
+$columns = [
+    'name' => 'varchar(255)',
+    'age' => 'int',
+    'height' => 'float',
+];
 
-$statement = "CREATE TABLE IF NOT EXISTS users
-(
-    id INT NOT NULL AUTO_INCREMENT,
-    name varchar(255),
-    PRIMARY KEY (id)
-);";
-
-$dbConnection->query($statement);
+TableMigration::migrate($tableName, $columns);
 
 ?>
