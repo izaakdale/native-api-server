@@ -12,12 +12,9 @@ class TableSeeder {
             $statement .= $value;
         }
         $statement .= ";";
-        
+
         $dbConnection->query($statement);
     }
-
-
-
 }
 
 ?>
