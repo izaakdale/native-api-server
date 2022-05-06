@@ -1,7 +1,7 @@
 <?
 
 require "TableMigration.php";
-// require "../Models/User.php";
+require "../Models/Product.php";
 
 $tableName = 'products';
 $migrationColumns = [
@@ -9,6 +9,6 @@ $migrationColumns = [
     'price' => 'float',
 ];
 
-TableMigration::migrate($tableName, $migrationColumns);
+TableMigration::migrate(Product::$tableName, $migrationColumns);
 
 ?>

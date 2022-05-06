@@ -1,9 +1,9 @@
 <?
 
-class User {
+class Product {
     
-    public static $tableName = 'users';
-    public $name, $age, $height;
+    public static $tableName = 'products';
+    public $name, $price;
 
     public function __construct($name, $age, $height)
     {
