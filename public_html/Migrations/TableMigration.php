@@ -1,7 +1,5 @@
 <?
 
-require "../bootstrap.php";
-
 class TableMigration {
 
     public static function migrate($tableName, $columns)

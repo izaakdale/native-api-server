@@ -14,10 +14,15 @@ From the same directory as this file run,
     composer install
 
 DB Creation
-    docker exec db mysql -u root -p
-    root
 
+    docker exec db mysql -u root -p
     CREATE DATABASE api_db;
+
+Authorization
+
+    docker exec -it app /bin/bash
+    cd public
+    php client.php
 
 Migration and Seeding
 

@@ -1,5 +1,4 @@
 <?
-require "../bootstrap.php";
 
 class TableSeeder {
 

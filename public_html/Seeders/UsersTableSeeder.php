@@ -1,7 +1,7 @@
 <?
 
-require "TableSeeder.php";
-require "../Models/User.php";
+require_once "TableSeeder.php";
+require_once "Models/User.php";
 
 $seederRows = [
     'columnNames' => User::toSqlColumns(),
