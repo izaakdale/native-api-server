@@ -4,7 +4,7 @@ namespace TableGateway;
 
 // Controls the querying of the database for use in the controller. 
 // Extraction allows changing engines or db types.
-class UserGateway {
+class Gateway {
 
     private $db = null;
 
@@ -13,9 +13,9 @@ class UserGateway {
         $this->db = $db;
     }
 
-    public function index()
+    public function index($tableName)
     {
-        $statement = "SELECT * FROM users;";
+        $statement = "SELECT * FROM $tableName;";
 
         $result = $this->db->query($statement);
         $result = $result->fetch_all(MYSQLI_ASSOC);
@@ -23,9 +23,9 @@ class UserGateway {
         return $result;
     }
 
-    public function show($id)
+    public function show($tableName, $id)
     {
-        $statement = "SELECT * FROM users WHERE id = $id;";
+        $statement = "SELECT * FROM $tableName WHERE id = $id;";
 
         $result = $this->db->query($statement);
         $result = $result->fetch_all(MYSQLI_ASSOC);

@@ -1,18 +1,22 @@
 <?php
 
 namespace Controllers;
+
 require_once 'Controller.php';
-require "../TableGateway/UserGateway.php";
-use TableGateway\UserGateway;
+require_once "../TableGateway/Gateway.php";
+require_once "../Models/User.php";
+
+use TableGateway\Gateway;
 use Controller;
+use User;
 
 class UserController extends Controller {
 
-    private $userGate;
+    private $gateway;
 
     public function __construct($db)
     {
-        $this->userGate = new UserGateway($db);
+        $this->gateway = new Gateway($db);
     }
 
     public function processRequest($requestMethod, $requestParam=null)
@@ -43,13 +47,13 @@ class UserController extends Controller {
 
     public function getUsers()
     {
-        $users = $this->userGate->index();
+        $users = $this->gateway->index(User::$tableName);
         return $this->foundResponse($users);
     }
 
     public function getUser($id)
     {
-        $user = $this->userGate->show($id);
+        $user = $this->gateway->show(User::$tableName, $id);
         if(!$user)
         {
             return $this->notFoundResponse();
