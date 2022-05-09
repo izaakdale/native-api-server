@@ -2,17 +2,17 @@
 
 namespace Controllers;
 require_once 'Controller.php';
-require "../TableGateway/UserGateway.php";
-use TableGateway\UserGateway;
+require "../TableGateway/ProductGateway.php";
+use TableGateway\ProductGateway;
 use Controller;
 
-class UserController extends Controller {
+class ProductController extends Controller {
 
-    private $userGate;
+    private $productGate;
 
     public function __construct($db)
     {
-        $this->userGate = new UserGateway($db);
+        $this->productGate = new ProductGateway($db);
     }
 
     public function processRequest($requestMethod, $requestParam=null)
@@ -21,12 +21,12 @@ class UserController extends Controller {
             case 'GET':
                 if(!$requestParam)
                 {
-                    $response = $this->getUsers();
+                    $response = $this->getProducts();
                 }
                 else
                 {
                     $id = $requestParam;
-                    $response = $this->getUser($id);
+                    $response = $this->getProduct($id);
                 }
                 break;
             default:
@@ -41,22 +41,22 @@ class UserController extends Controller {
         }
     }
 
-    public function getUsers()
+    public function getProducts()
     {
-        $users = $this->userGate->index();
-        return $this->foundResponse($users);
+        $products = $this->productGate->index();
+        return $this->foundResponse($products);
     }
 
-    public function getUser($id)
+    public function getProduct($id)
     {
-        $user = $this->userGate->show($id);
-        if(!$user)
+        $product = $this->productGate->show($id);
+        if(!$product)
         {
             return $this->notFoundResponse();
         }
         else
         {
-            return $this->foundResponse($user);
+            return $this->foundResponse($product);
         }
     }
 }

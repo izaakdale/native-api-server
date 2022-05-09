@@ -2,8 +2,10 @@
 
 require '../bootstrap.php';
 require '../Controllers/UserController.php';
+require '../Controllers/ProductController.php';
 
 use Controllers\UserController;
+use Controllers\ProductController;
 
 header("Content-Type: application/json");
 
@@ -16,8 +18,12 @@ if($uri[1] == 'api')
 {
     switch ($uri[2]) {
         case 'users':
-            $controller = new UserController($dbConnection);
-            $controller->processRequest($requestMethod, isset($uri[3]) ? (int) $uri[3] : null);
+            $userController = new UserController($dbConnection);
+            $userController->processRequest($requestMethod, isset($uri[3]) ? (int) $uri[3] : null);
+            break;
+        case 'products':
+            $productController = new ProductController($dbConnection);
+            $productController->processRequest($requestMethod, isset($uri[3]) ? (int) $uri[3] : null);
             break;
         default:
             return Controller::notFoundResponse();
