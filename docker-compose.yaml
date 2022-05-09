@@ -16,8 +16,6 @@ services:
     image: mysql:8.0.26
     networks:
       - backend
-    environment:
-      - MYSQL_ROOT_PASSWORD=root
     volumes:
       - 'native-api-server-mysql:/var/lib/mysql'
 

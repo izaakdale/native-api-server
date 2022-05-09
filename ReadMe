@@ -1,0 +1,40 @@
+This repository contains a docker project that builds a PHP API server with little help from libraries.
+
+The aim of this project was to practice and gain understanding of the underlying principles of API servers since
+creating one within the Laravel framework left me wanting answers.
+
+To use:
+
+From the same directory as this file run,
+
+    cp .env.example .env
+    docker-compose up -d
+
+DB Creation
+    docker exec db mysql -u root -p
+    root
+
+    CREATE DATABASE api_db;
+
+Migration and Seeding
+
+    docker exec -it app /bin/bash
+
+    cd /Migrations
+    php UserTableMigration.php
+    php ProductTableMigration.php
+
+    cd ../Seeders
+    php UsersTableSeeder.php
+    php ProductsTableSeeder.php
+
+Use any API method you like, to test I run
+
+    curl -X GET "localhost:8080/api/users"
+
+ROUTES:
+    URL/api/users
+    URL/api/users/id
+    URL/api/products
+    URL/api/products/id
+    
