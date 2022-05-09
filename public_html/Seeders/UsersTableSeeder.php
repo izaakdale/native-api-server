@@ -4,10 +4,10 @@ require "TableSeeder.php";
 require "../Models/User.php";
 
 $seederRows = [
-    'columnNames' => User::$columnNames,
+    'columnNames' => User::toSqlColumns(),
     'values' => [
-        (new User('izaak', '28', '175', '70'))->toSqlRow() . ",",
-        (new User('mahtab', '25', '165', '50'))->toSqlRow()
+        (new User('izaak', '28'))->toSqlRow() . ",",
+        (new User('mahtab', '25'))->toSqlRow()
     ]
 ];
 

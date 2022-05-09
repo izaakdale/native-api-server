@@ -7,14 +7,14 @@ class TableMigration {
     public static function migrate($tableName, $columns)
     {
         global $dbConnection;
-        $statement = "CREATE TABLE IF NOT EXISTS $tableName(id INT NOT NULL AUTO_INCREMENT, ";
+        $statement = "CREATE TABLE IF NOT EXISTS $tableName(";
 
         foreach ($columns as $columnName => $columnType) {
             $statement .= "$columnName $columnType, ";
         }
 
-        $statement.=" PRIMARY KEY (id));";
-
+        // remove trailing ', ' from the for loop, add ); to end of statement
+        $statement = rtrim($statement, ", ") . ");";
         $dbConnection->query($statement);
     }
     
