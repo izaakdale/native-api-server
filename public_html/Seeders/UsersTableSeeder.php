@@ -6,8 +6,8 @@ require "../Models/User.php";
 $seederRows = [
     'columnNames' => User::toSqlColumns(),
     'values' => [
-        (new User('izaak', '28'))->toSqlRow() . ",",
-        (new User('mahtab', '25'))->toSqlRow()
+        (new User('izaak', 28))->toSqlRow() . ",",
+        (new User('mahtab', 25))->toSqlRow()
     ]
 ];
 
