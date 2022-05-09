@@ -1,5 +1,5 @@
 <?
-
+require_once "bootstrap.php";
 require_once "TableSeeder.php";
 require_once "Models/Product.php";
 
