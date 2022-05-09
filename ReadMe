@@ -28,13 +28,16 @@ Migration and Seeding
 
     docker exec -it app /bin/bash
 
-    cd /Migrations
-    php UserTableMigration.php
-    php ProductTableMigration.php
+    php migrate.php
+    php seed.php
 
-    cd ../Seeders
-    php UsersTableSeeder.php
-    php ProductsTableSeeder.php
+    OR, individually:
+
+    php Migrations/UserTableMigration.php
+    php Migrations/ProductTableMigration.php
+
+    php Seeders/UsersTableSeeder.php
+    php Seeders/ProductsTableSeeder.php
 
 Use any API method you like, to test I run
 

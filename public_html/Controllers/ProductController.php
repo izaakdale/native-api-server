@@ -33,17 +33,17 @@ class ProductController extends Controller {
                     $response = $this->getProduct($id);
                 }
                 break;
-                case 'DELETE':
-                    if(!$requestParam)
-                    {
-                        $response = $this->notFoundResponse();
-                    }
-                    else
-                    {
-                        $id = $requestParam;
-                        $response = $this->deleteProduct($id);
-                    }
-                    break;
+            case 'DELETE':
+                if(!$requestParam)
+                {
+                    $response = $this->notFoundResponse();
+                }
+                else
+                {
+                    $id = $requestParam;
+                    $response = $this->deleteProduct($id);
+                }
+                break;
             default:
                 $response = $this->notFoundResponse();
                 break;
