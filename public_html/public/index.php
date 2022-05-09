@@ -13,6 +13,12 @@ $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $uri = explode('/', $uri);
 $requestMethod = $_SERVER["REQUEST_METHOD"];
 
+// authenticate the request with Okta:
+if (! authenticate()) {
+    header("HTTP/1.1 401 Unauthorized");
+    exit('Unauthorized');
+}
+
 // form of api request should be in {{URL}}/api/model/param, explode => [0]/[1]/[2]/[3]
 if($uri[1] == 'api')
 {
@@ -33,6 +39,35 @@ if($uri[1] == 'api')
 else
 {
     return Controller::notFoundResponse();
+}
+
+function authenticate() {
+    try {
+        switch(true) {
+            case array_key_exists('HTTP_AUTHORIZATION', $_SERVER) :
+                $authHeader = $_SERVER['HTTP_AUTHORIZATION'];
+                break;
+            case array_key_exists('Authorization', $_SERVER) :
+                $authHeader = $_SERVER['Authorization'];
+                break;
+            default :
+                $authHeader = null;
+                break;
+        }
+        preg_match('/Bearer\s(\S+)/', $authHeader, $matches);
+        if(!isset($matches[1])) {
+            throw new \Exception('No Bearer Token');
+        }
+        $jwtVerifier = (new \Okta\JwtVerifier\JwtVerifierBuilder())
+        ->setIssuer(getenv('OKTAISSUER'))
+        ->setAudience('api://default')
+        ->setClientId(getenv('OKTACLIENTID'))
+        ->build();
+        return $jwtVerifier->verify($matches[1]);
+        echo "hello";die;
+    } catch (\Exception $e) {
+        return false;
+    }
 }
 
 ?>
