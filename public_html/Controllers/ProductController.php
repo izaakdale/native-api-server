@@ -33,6 +33,17 @@ class ProductController extends Controller {
                     $response = $this->getProduct($id);
                 }
                 break;
+                case 'DELETE':
+                    if(!$requestParam)
+                    {
+                        $response = $this->notFoundResponse();
+                    }
+                    else
+                    {
+                        $id = $requestParam;
+                        $response = $this->deleteProduct($id);
+                    }
+                    break;
             default:
                 $response = $this->notFoundResponse();
                 break;
@@ -61,6 +72,19 @@ class ProductController extends Controller {
         else
         {
             return $this->foundResponse($product);
+        }
+    }
+
+    public function deleteProduct($id)
+    {
+        $deletionStatus = $this->gateway->delete(Product::$tableName, $id);
+        if(TRUE === $deletionStatus)
+        {
+            return $this->foundResponse('Deleted Successfully');
+        }
+        else
+        {
+            return $this->notFoundResponse();
         }
     }
 }

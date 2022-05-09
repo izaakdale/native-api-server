@@ -32,6 +32,13 @@ class Gateway {
         
         return  $result;
     }
+
+    public function delete($tableName, $id)
+    {
+        $statement = "DELETE FROM $tableName WHERE id = $id;";
+        $result = $this->db->query($statement);
+        return  $result;
+    }
 }
 
 

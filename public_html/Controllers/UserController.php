@@ -33,6 +33,17 @@ class UserController extends Controller {
                     $response = $this->getUser($id);
                 }
                 break;
+            case 'DELETE':
+                if(!$requestParam)
+                {
+                    $response = $this->notFoundResponse();
+                }
+                else
+                {
+                    $id = $requestParam;
+                    $response = $this->deleteUser($id);
+                }
+                break;
             default:
                 $response = $this->notFoundResponse();
                 break;
@@ -61,6 +72,19 @@ class UserController extends Controller {
         else
         {
             return $this->foundResponse($user);
+        }
+    }
+
+    public function deleteUser($id)
+    {
+        $deletionStatus = $this->gateway->delete(User::$tableName, $id);
+        if(TRUE === $deletionStatus)
+        {
+            return $this->foundResponse('Deleted Successfully');
+        }
+        else
+        {
+            return $this->notFoundResponse();
         }
     }
 }

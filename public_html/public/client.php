@@ -1,5 +1,5 @@
 <?php
-require "../bootstrap.php";
+require "bootstrap.php";
 
 $clientId     = getenv('OKTACLIENTID');
 $clientSecret = getenv('OKTASECRET');

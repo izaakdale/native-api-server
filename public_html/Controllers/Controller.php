@@ -1,6 +1,6 @@
 <? 
 
-class Controller {
+abstract class Controller {
 
     public static function notFoundResponse()
     {
@@ -17,9 +17,7 @@ class Controller {
 
     // Index.php sends uri requests here. Process request is implemented in each child class, 
     // there it handles all rest methods and asks the respective gateway to carry out the query
-    public function processRequest($requestMethod, $requestParams=null)
-    {
-    }
+    abstract public function processRequest($requestMethod, $requestParams=null);
 
 }
 
