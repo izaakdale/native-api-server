@@ -39,13 +39,13 @@ Migration and Seeding
     php Seeders/UsersTableSeeder.php
     php Seeders/ProductsTableSeeder.php
 
-Use any API method you like, to test I run
+To test I run, or use Postman
 
     curl -X GET localhost:8080/api/users -H "Authorization: Bearer _TOKEN_"
 
 ROUTES:
-    URL/api/users
-    URL/api/users/id
-    URL/api/products
-    URL/api/products/id
+    URL/api/users {GET}
+    URL/api/users/id {GET,DELETE}
+    URL/api/products {GET}
+    URL/api/products/id {GET,DELETE}
     
