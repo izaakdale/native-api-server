@@ -3,21 +3,12 @@
 namespace Controllers;
 
 require_once 'Controller.php';
-require_once "../TableGateway/Gateway.php";
 require_once "../Models/Product.php";
 
-use TableGateway\Gateway;
 use Controller;
 use Product;
 
 class ProductController extends Controller {
-
-    private $gateway;
-
-    public function __construct($db)
-    {
-        $this->gateway = new Gateway($db);
-    }
 
     public function processRequest($requestMethod, $requestParam=null)
     {

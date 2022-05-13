@@ -1,6 +1,16 @@
 <? 
+require_once "../TableGateway/Gateway.php";
+use TableGateway\Gateway;
 
 abstract class Controller {
+
+    protected $gateway;
+
+    public function __construct($db)
+    {
+        $this->gateway = new Gateway($db);
+    }
+
 
     public static function notFoundResponse()
     {
