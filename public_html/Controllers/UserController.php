@@ -39,12 +39,6 @@ class UserController extends Controller {
                 $response = $this->notFoundResponse();
                 break;
         }
-
-        header($response['status_code_header']);
-        if($response['body'])
-        {
-            print_r($response['body']);
-        }
     }
 
     public function getUsers()

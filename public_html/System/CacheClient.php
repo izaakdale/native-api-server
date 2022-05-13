@@ -16,7 +16,7 @@ class CacheClient {
         $this->client = new client([
             'scheme' => 'tcp',
             'host'   => $host,
-            'port'   => $port,
+            'port'   => $port
         ]);
     }
 

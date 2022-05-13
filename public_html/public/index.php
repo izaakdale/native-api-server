@@ -1,11 +1,13 @@
 <?
 
-require '../bootstrap.php';
-require '../Controllers/UserController.php';
-require '../Controllers/ProductController.php';
+require_once '../bootstrap.php';
+require_once '../Controllers/UserController.php';
+require_once '../Controllers/ProductController.php';
+require_once '../Controllers/TokenController.php';
 
 use Controllers\UserController;
 use Controllers\ProductController;
+use Controllers\TokenController;
 
 header("Content-Type: application/json");
 
@@ -13,60 +15,67 @@ $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $uri = explode('/', $uri);
 $requestMethod = $_SERVER["REQUEST_METHOD"];
 
-// authenticate the request with Okta:
-if (! authenticate()) {
-    header("HTTP/1.1 401 Unauthorized");
-    exit('Unauthorized');
-}
 
-// form of api request should be in {{URL}}/api/model/param, explode => [0]/[1]/[2]/[3]
-if($uri[1] == 'api')
+if(authenticate($cacheClient))
 {
-    switch ($uri[2]) {
-        case 'users':
-            $userController = new UserController($dbConnection);
-            $userController->processRequest($requestMethod, isset($uri[3]) ? (int) $uri[3] : null);
-            break;
-        case 'products':
-            $productController = new ProductController($dbConnection);
-            $productController->processRequest($requestMethod, isset($uri[3]) ? (int) $uri[3] : null);
-            break;
-        default:
-            return Controller::notFoundResponse();
-            break;
+    if($uri[1] == 'api')
+    {
+        // form of api request should be in {{URL}}/api/model/param, explode => [0]/[1]/[2]/[3]
+        switch ($uri[2]) {
+            case 'users':
+                $userController = new UserController($dbConnection);
+                $userController->processRequest($requestMethod, isset($uri[3]) ? (int) $uri[3] : null);
+                break;
+            case 'products':
+                $productController = new ProductController($dbConnection);
+                $productController->processRequest($requestMethod, isset($uri[3]) ? (int) $uri[3] : null);
+                break;
+            default:
+                $controller = new Controller($dbConnection);
+                return Controller::notFoundResponse();
+                break;
+        }
+    }
+    else
+    {
+        return Controller::notFoundResponse();
     }
 }
 else
 {
-    return Controller::notFoundResponse();
+    // not authenticated
+    // check if api request is for authentication
+    // return either 401 unauthorized or a jwt
+    if($uri[1] == 'api')
+    {
+        switch ($uri[2]) {
+            case 'token':
+                if(isset($_SERVER['HTTP_CLIENTID']) && isset($_SERVER['HTTP_CLIENTSECRET']))
+                {
+                    $params = [
+                        'clientId' => $_SERVER['HTTP_CLIENTID'],
+                        'clientSecret' => $_SERVER['HTTP_CLIENTSECRET']
+                    ];
+                    $tokenController = new TokenController($dbConnection, $cacheClient);
+                    $tokenController->processRequest($requestMethod, $params);
+                }
+                else{
+                    return Controller::notFoundResponse('Invalid headers');
+                }
+                break;
+            // requests that end up here are unauthorized but in a valid form URL/api/model
+            default:
+                return Controller::unauthorizedResponse('Unauthorized');
+                break;
+        }
+    }
 }
 
-function authenticate() {
-    try {
-        switch(true) {
-            case array_key_exists('HTTP_AUTHORIZATION', $_SERVER) :
-                $authHeader = $_SERVER['HTTP_AUTHORIZATION'];
-                break;
-            case array_key_exists('Authorization', $_SERVER) :
-                $authHeader = $_SERVER['Authorization'];
-                break;
-            default :
-                $authHeader = null;
-                break;
-        }
-        preg_match('/Bearer\s(\S+)/', $authHeader, $matches);
-        if(!isset($matches[1])) {
-            throw new \Exception('No Bearer Token');
-        }
-        $jwtVerifier = (new \Okta\JwtVerifier\JwtVerifierBuilder())
-        ->setIssuer(getenv('OKTAISSUER'))
-        ->setAudience('api://default')
-        ->setClientId(getenv('OKTACLIENTID'))
-        ->build();
-        return $jwtVerifier->verify($matches[1]);
-        echo "hello";die;
-    } catch (\Exception $e) {
-        return false;
+function authenticate($cacheClient)
+{
+    if(isset($_SERVER['HTTP_AUTHORIZATION']))
+    {
+        return $cacheClient->get($_SERVER['HTTP_AUTHORIZATION']);
     }
 }
 

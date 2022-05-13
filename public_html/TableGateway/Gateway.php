@@ -39,6 +39,15 @@ class Gateway {
         $result = $this->db->query($statement);
         return  $result;
     }
+
+    public function get($tableName, $returnColumn, $indexColumn ,$value)
+    {
+        $statement = "SELECT $returnColumn FROM $tableName WHERE $indexColumn='$value';";
+        $result = $this->db->query($statement);
+        $result = $result->fetch_all(MYSQLI_ASSOC);
+
+        return  $result;
+    }
 }
 
 

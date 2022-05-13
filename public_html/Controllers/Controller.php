@@ -1,4 +1,6 @@
 <? 
+// namespace Controllers;
+
 require_once "../TableGateway/Gateway.php";
 use TableGateway\Gateway;
 
@@ -11,18 +13,28 @@ abstract class Controller {
         $this->gateway = new Gateway($db);
     }
 
+    public static function unauthorizedResponse($body=null)
+    {
+        header('HTTP/1.1 401 UNAUTHORIZED');
+        exit($body);
+    }
 
-    public static function notFoundResponse()
+    public static function notFoundResponse($body=null)
     {
         header('HTTP/1.1 404 NOT FOUND');
-        exit;
+        exit($body);
     }
 
     public static function foundResponse($body)
     {
         $response['status_code_header'] = 'HTTP/1.1 200 OK';
-        $response['body'] = json_encode($body);
-        return $response;
+        $response['body'] = json_encode($body);        
+        
+        header($response['status_code_header']);
+        if($response['body'])
+        {
+            print_r($response['body']);
+        }
     }
 
     // Index.php sends uri requests here. Process request is implemented in each child class, 
