@@ -19,6 +19,14 @@ services:
     volumes:
       - 'native-api-server-mysql:/var/lib/mysql'
 
+  redis:
+    container_name: cache
+    platform: linux/x86_64
+    image: redis:latest
+    networks:
+      - backend
+
+
 networks:
   backend:
 volumes:
