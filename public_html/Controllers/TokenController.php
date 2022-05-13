@@ -55,7 +55,8 @@ class TokenController extends Controller
             'alg' => 'HS256'
         ]);
         $payload = json_encode([
-            $payloadArray
+            $payloadArray,
+            date("h:i:sa")
         ]);
 
         $base64UrlHeader = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode($header));

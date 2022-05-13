@@ -18,12 +18,6 @@ DB Creation
     docker exec db mysql -u root -p
     CREATE DATABASE api_db;
 
-Authorization
-
-    docker exec -it app /bin/bash
-    cd public
-    php client.php
-
 Migration and Seeding
 
     docker exec -it app /bin/bash
@@ -39,13 +33,20 @@ Migration and Seeding
     php Seeders/UsersTableSeeder.php
     php Seeders/ProductsTableSeeder.php
 
+Authorization
+
+    You must have a clientId and clientSecret registered in the db
+    Then you can send an api request to /api/token with your clientId and clientSecret as headers
+    This will return a token to use as Authorization header in future requests.
+
 To test I run, or use Postman
 
-    curl -X GET localhost:8080/api/users -H "Authorization: Bearer _TOKEN_"
+    curl -X GET localhost:8080/api/products -H "Authorization: _TOKEN_"
 
 ROUTES:
     URL/api/users {GET}
     URL/api/users/id {GET,DELETE}
     URL/api/products {GET}
     URL/api/products/id {GET,DELETE}
+    URL/api/token {GET}
     
