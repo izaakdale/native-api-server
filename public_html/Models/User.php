@@ -3,22 +3,20 @@
 class User {
 
     public string $name;
-    public int $age; 
-    public float $height;
-    public float $weight;
+    public string $secret;
     
     public static $tableName = 'users';  
     public static $migrationColumns = [
         'id' => 'INT NOT NULL AUTO_INCREMENT',
-        'name' => 'varchar(255)',
-        'age' => 'int',
+        'name' => 'varchar(255) NOT NULL',
+        'secret' => 'varchar(255) NOT NULL',
         'PRIMARY KEY' => '(id)'
     ];
 
-    public function __construct($name, $age)
+    public function __construct($name, $secret)
     {
         $this->name = $name;
-        $this->age = $age;
+        $this->secret = $secret;
     }
     
     public static function toSqlColumns()
@@ -39,7 +37,7 @@ class User {
 
     public function toSqlRow()
     {
-        return "('$this->name', $this->age)";
+        return "('$this->name', '$this->secret')";
     }
 }
 
