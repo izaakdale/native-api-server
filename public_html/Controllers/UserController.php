@@ -16,27 +16,27 @@ class UserController extends Controller {
             case 'GET':
                 if(!$requestParam)
                 {
-                    $response = $this->getUsers();
+                    $this->getUsers();
                 }
                 else
                 {
                     $id = $requestParam;
-                    $response = $this->getUser($id);
+                    $this->getUser($id);
                 }
                 break;
             case 'DELETE':
                 if(!$requestParam)
                 {
-                    $response = $this->notFoundResponse();
+                    $this->notFoundResponse();
                 }
                 else
                 {
                     $id = $requestParam;
-                    $response = $this->deleteUser($id);
+                    $this->deleteUser($id);
                 }
                 break;
             default:
-                $response = $this->notFoundResponse();
+                $this->notFoundResponse();
                 break;
         }
     }

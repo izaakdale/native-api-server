@@ -16,27 +16,27 @@ class ProductController extends Controller {
             case 'GET':
                 if(!$requestParam)
                 {
-                    $response = $this->getProducts();
+                    $this->getProducts();
                 }
                 else
                 {
                     $id = $requestParam;
-                    $response = $this->getProduct($id);
+                    $this->getProduct($id);
                 }
                 break;
             case 'DELETE':
                 if(!$requestParam)
                 {
-                    $response = $this->notFoundResponse();
+                    $this->notFoundResponse();
                 }
                 else
                 {
                     $id = $requestParam;
-                    $response = $this->deleteProduct($id);
+                    $this->deleteProduct($id);
                 }
                 break;
             default:
-                $response = $this->notFoundResponse();
+                $this->notFoundResponse();
                 break;
         }
     }
