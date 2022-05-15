@@ -79,13 +79,12 @@ function authenticate($cacheClient)
         {
             $tokenArray = json_decode(base64_decode(str_replace('_', '/', str_replace('-','+',explode('.', $_SERVER['HTTP_AUTHORIZATION'])[1]))));
     
-            $tokenDate = date_create($tokenArray[1]);
-            $now = date_create();
+            $tokenTime = date_create($tokenArray[1])->getTimestamp();
+            $nowTime = date_create()->getTimestamp();
+            
+            $timeDiff = $nowTime - $tokenTime;
     
-            $timeDiff = date_diff($now, $tokenDate);
-            $elapsed = ($timeDiff->i * 60) + $timeDiff->s ;
-    
-            if(getenv('CACHE_TOKEN_TIMEOUT') >= $elapsed)
+            if(getenv('CACHE_TOKEN_TIMEOUT') >= $timeDiff)
             {
                 return true;
             }
