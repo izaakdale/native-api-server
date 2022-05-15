@@ -74,7 +74,32 @@ function authenticate($cacheClient)
 {
     if(isset($_SERVER['HTTP_AUTHORIZATION']))
     {
-        return $cacheClient->get($_SERVER['HTTP_AUTHORIZATION']);
+        $tokenValue = $cacheClient->get($_SERVER['HTTP_AUTHORIZATION']);
+        if($tokenValue)
+        {
+            $tokenArray = json_decode(base64_decode(str_replace('_', '/', str_replace('-','+',explode('.', $_SERVER['HTTP_AUTHORIZATION'])[1]))));
+    
+            $tokenDate = date_create($tokenArray[1]);
+            $now = date_create();
+    
+            $timeDiff = date_diff($now, $tokenDate);
+            $elapsed = ($timeDiff->i * 60) + $timeDiff->s ;
+    
+            if(getenv('CACHE_TOKEN_TIMEOUT') >= $elapsed)
+            {
+                return true;
+            }
+            else
+            {
+                // token timestamp is older than the specified timeout.
+                return Controller::unauthorizedResponse('Unauthorized');
+            }
+        }
+        else
+        {
+            return Controller::unauthorizedResponse('Unauthorized');
+        }
+
     }
 }
 
