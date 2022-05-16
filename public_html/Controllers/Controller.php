@@ -25,7 +25,7 @@ abstract class Controller {
         exit($body);
     }
 
-    public static function foundResponse($body)
+    public static function foundResponse($body=null)
     {
         $response['status_code_header'] = 'HTTP/1.1 200 OK';
         $response['body'] = json_encode($body);        

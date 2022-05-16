@@ -37,6 +37,10 @@ if(authenticate($cacheClient))
                     $gaussianController = new GaussianController($dbConnection);
                     $gaussianController->processRequest($requestMethod, $params); 
                 }
+                else
+                {
+                    return Controller::notFoundResponse();
+                }
                 break;
             default:
                 return Controller::notFoundResponse();

@@ -33,7 +33,10 @@ class GaussianGenerator {
         for($x = $this->minX; $x <= $this->maxX; $x += $interval)
         {
             $x = round($x, 6);
-            $arr[strval($x)] = $this->gauss($x);
+            $arr[] = [
+                'x' => $x,
+                'y' => $this->gauss($x),
+            ];
         }
         return $arr;
     }

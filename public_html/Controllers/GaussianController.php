@@ -16,7 +16,7 @@ class GaussianController extends Controller {
                 $requestParams['noDatapoints']
             );
 
-            return $this->foundResponse($gaussianCurve->toArray());
+            return parent::foundResponse($gaussianCurve->toArray());
         }
     }
 }
