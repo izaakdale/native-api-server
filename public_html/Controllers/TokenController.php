@@ -32,7 +32,7 @@ class TokenController extends Controller
                 $jwt = $this->generateJwt($requestParams['clientId']);
 
                 // save a jwt to cache, return in 200 ok
-                $this->cacheClient->set($jwt, 'true');
+                $this->cacheClient->set($jwt, $requestParams['clientId']);
                 $this->cacheClient->expire($jwt, getenv('CACHE_TOKEN_TIMEOUT'));
 
                 return parent::foundResponse([
@@ -46,7 +46,7 @@ class TokenController extends Controller
         }
     }
 
-    public function generateJwt($payloadArray)
+    public function generateJwt($payloadInput)
     {
         $jwt = null;
 
@@ -55,8 +55,8 @@ class TokenController extends Controller
             'alg' => 'HS256'
         ]);
         $payload = json_encode([
-            $payloadArray,
-            date("h:i:sa")
+            $payloadInput,
+            time()
         ]);
 
         $base64UrlHeader = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode($header));

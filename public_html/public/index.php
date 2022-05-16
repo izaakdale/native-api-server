@@ -77,16 +77,26 @@ function authenticate($cacheClient)
         $tokenValue = $cacheClient->get($_SERVER['HTTP_AUTHORIZATION']);
         if($tokenValue)
         {
-            $tokenArray = json_decode(base64_decode(str_replace('_', '/', str_replace('-','+',explode('.', $_SERVER['HTTP_AUTHORIZATION'])[1]))));
-    
-            $tokenTime = date_create($tokenArray[1])->getTimestamp();
+            if(isset( explode('.', $_SERVER['HTTP_AUTHORIZATION'])[1] ))
+            {
+                $tokenArray = json_decode(base64_decode(str_replace('_', '/', str_replace('-','+',explode('.', $_SERVER['HTTP_AUTHORIZATION'])[1]))));
+            }
+            else
+            {
+                return Controller::unauthorizedResponse('Unauthorized');
+            }
+            
+            $tokenTime = $tokenArray[1];
             $nowTime = date_create()->getTimestamp();
             
             $timeDiff = $nowTime - $tokenTime;
     
             if(getenv('CACHE_TOKEN_TIMEOUT') >= $timeDiff)
             {
-                return true;
+                if($tokenValue === $tokenArray[0])
+                {
+                    return true;
+                }
             }
             else
             {
