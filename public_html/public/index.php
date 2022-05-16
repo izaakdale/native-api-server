@@ -4,6 +4,7 @@ require_once '../bootstrap.php';
 require_once '../Controllers/UserController.php';
 require_once '../Controllers/ProductController.php';
 require_once '../Controllers/TokenController.php';
+require_once '../Controllers/GaussianController.php';
 
 use Controllers\UserController;
 use Controllers\ProductController;
@@ -29,6 +30,13 @@ if(authenticate($cacheClient))
             case 'products':
                 $productController = new ProductController($dbConnection);
                 $productController->processRequest($requestMethod, isset($uri[3]) ? (int) $uri[3] : null);
+                break;
+            case 'gaussian':
+                if( $params = validGaussianRequest() )
+                {
+                    $gaussianController = new GaussianController($dbConnection);
+                    $gaussianController->processRequest($requestMethod, $params); 
+                }
                 break;
             default:
                 return Controller::notFoundResponse();
@@ -85,7 +93,7 @@ function authenticate($cacheClient)
             {
                 return Controller::unauthorizedResponse('Unauthorized');
             }
-            
+
             $tokenTime = $tokenArray[1];
             $nowTime = date_create()->getTimestamp();
             
@@ -110,6 +118,30 @@ function authenticate($cacheClient)
         }
 
     }
+}
+
+function validGaussianRequest()
+{
+    if(
+    isset($_SERVER['HTTP_MU']) && 
+    isset($_SERVER['HTTP_THETA']) && 
+    isset($_SERVER['HTTP_MINX']) && 
+    isset($_SERVER['HTTP_MAXX']) &&
+    isset($_SERVER['HTTP_NODATAPOINTS']))
+    {
+        return [
+            'mu' => $_SERVER['HTTP_MU'],
+            'theta' => $_SERVER['HTTP_THETA'],
+            'minX' => $_SERVER['HTTP_MINX'],
+            'maxX' => $_SERVER['HTTP_MAXX'],
+            'noDatapoints' => $_SERVER['HTTP_NODATAPOINTS']
+        ];
+    }
+    else
+    {
+        return false;
+    }
+    
 }
 
 ?>
